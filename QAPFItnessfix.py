@@ -18,11 +18,11 @@ def main() -> None:
             print("Please enter 'S', 'M', or 'B' for data size selection.")
     
     if size_choice == 's':
-        csv_path = r"C:\Users\bengkel\Desktop\Project_SFO\QAP\qap_matrices.csv"
+        csv_path = r"qap_matrices.csv"
     elif size_choice == 'm':
-        csv_path = r"C:\Users\bengkel\Desktop\Project_SFO\QAP\qap_matrices2.csv"
+        csv_path = r"qap_matrices2.csv"
     elif size_choice == 'b':
-        csv_path = r"C:\Users\bengkel\Desktop\Project_SFO\QAP\qap_matrices3.csv"
+        csv_path = r"qap_matrices3.csv"
 
     freq_matrix, distance_matrix = read_matrices_from_csv(csv_path)
 
