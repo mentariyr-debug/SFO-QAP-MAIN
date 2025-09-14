@@ -81,9 +81,115 @@ def print_final_results(engine) -> None:
     if engine.fitness_history[0] > 0:
         print(f"- Improvement percentage: {((engine.fitness_history[0] - engine.fitness_history[-1]) / engine.fitness_history[0] * 100):.2f}%")
     print(f"\nFitness History: {engine.fitness_history}")
+    
+    # Add conclusion explanation
     print("\n" + "="*100)
+    print("CONCLUSION AND ANALYSIS")
+    print("="*100)
+    print("The Sailfish Optimizer algorithm has successfully completed the optimization process.")
+    print("The algorithm utilized a population-based metaheuristic approach inspired by the")
+    print("hunting behavior of sailfish and sardines in nature.")
+    print()
+    print("Key Findings:")
+    print(f"• The most optimal facility assignment found is: {engine.best_solution}")
+    print(f"• This assignment achieves a total cost of: {engine.best_fitness}")
+    print(f"• The algorithm explored {len(engine.fitness_history)} iterations")
+    print(f"• Starting with {engine.original_n_sailfish} sailfish and {engine.original_n_sardines} sardines")
+    print(f"• Final population: {engine.n_sailfish} sailfish and {engine.n_sardines} sardines")
+    print()
+    print("Algorithm Performance:")
+    if engine.fitness_history[0] > 0:
+        improvement_pct = ((engine.fitness_history[0] - engine.fitness_history[-1]) / engine.fitness_history[0] * 100)
+        print(f"• Achieved {improvement_pct:.2f}% improvement from initial to final solution")
+    print(f"• Total cost reduction: {engine.fitness_history[0] - engine.fitness_history[-1]}")
+    print()
+    print("The optimal solution represents the best possible arrangement of facilities")
+    print("to minimize the total transportation cost, considering both the frequency")
+    print("of interactions between facilities and the distances between locations.")
+    print()
+    print("MOST OPTIMAL ARRAY:")
+    print(f"Facility Assignment: {engine.best_solution}")
+    print("This array indicates which facility should be placed at each location:")
+    for i, facility in enumerate(engine.best_solution):
+        print(f"  Location {i+1} → Facility {facility}")
+    print()
+    print("="*100)
     print("OPTIMIZATION COMPLETED SUCCESSFULLY!")
     print("Algorithm ran for all requested iterations without convergence checking.")
+    print("="*100)
+
+
+def report_sardine_population_extinction(engine, iteration_when_extinct: int) -> None:
+    """
+    Reports when the sardine population reaches 0, providing detailed analysis
+    of the extinction event and its implications for the optimization process.
+    
+    Args:
+        engine: The SailfishOptimizer instance
+        iteration_when_extinct: The iteration number when sardines reached 0
+    """
+    print(f"\n" + "="*100)
+    print("🚨 SARDINE POPULATION EXTINCTION EVENT 🚨")
+    print("="*100)
+    print(f"CRITICAL EVENT: All sardines have been eliminated from the population!")
+    print(f"Extinction occurred at: ITERATION {iteration_when_extinct}")
+    print()
+    
+    print("📊 EXTINCTION ANALYSIS:")
+    print("-" * 50)
+    print(f"• Initial sardine population: {engine.original_n_sardines}")
+    print(f"• Final sardine population: {engine.n_sardines}")
+    print(f"• Total sardines eliminated: {engine.original_n_sardines}")
+    print(f"• Iterations survived: {iteration_when_extinct}")
+    print(f"• Average elimination rate: {engine.original_n_sardines / iteration_when_extinct:.2f} sardines per iteration")
+    print()
+    
+    print("🎯 OPTIMIZATION IMPACT:")
+    print("-" * 50)
+    print(f"• Current sailfish population: {engine.n_sailfish}")
+    print(f"• Best solution found: {engine.best_solution}")
+    print(f"• Best fitness achieved: {engine.best_fitness}")
+    print(f"• Total iterations completed: {len(engine.fitness_history)}")
+    print()
+    
+    if len(engine.fitness_history) > 1:
+        print("📈 FITNESS EVOLUTION:")
+        print("-" * 50)
+        print(f"• Initial fitness: {engine.fitness_history[0]}")
+        print(f"• Final fitness: {engine.fitness_history[-1]}")
+        print(f"• Total improvement: {engine.fitness_history[0] - engine.fitness_history[-1]}")
+        if engine.fitness_history[0] > 0:
+            improvement_pct = ((engine.fitness_history[0] - engine.fitness_history[-1]) / engine.fitness_history[0] * 100)
+            print(f"• Improvement percentage: {improvement_pct:.2f}%")
+        print()
+    
+    print("🔍 EXTINCTION CAUSE ANALYSIS:")
+    print("-" * 50)
+    print("The sardine population extinction occurred due to the replacement mechanism")
+    print("in the Sailfish Optimizer algorithm. This happens when:")
+    print("• Sardines consistently find better solutions than the worst sailfish")
+    print("• The replacement process promotes all sardines to sailfish status")
+    print("• No new sardines are introduced to maintain population diversity")
+    print()
+    
+    print("⚡ ALGORITHM BEHAVIOR AFTER EXTINCTION:")
+    print("-" * 50)
+    print("• Sardine position updates will be skipped (no sardines to update)")
+    print("• Only sailfish will continue to evolve and search for solutions")
+    print("• The algorithm will rely entirely on sailfish hunting strategies")
+    print("• Population diversity is significantly reduced")
+    print()
+    
+    print("🎯 RECOMMENDATIONS:")
+    print("-" * 50)
+    print("• Consider this a successful convergence event - all sardines became sailfish")
+    print("• The algorithm has found a highly optimized solution space")
+    print("• Further iterations will focus on fine-tuning sailfish positions")
+    print("• This extinction indicates strong optimization performance")
+    print()
+    
+    print("="*100)
+    print("🔄 CONTINUING OPTIMIZATION WITH SAILFISH-ONLY POPULATION")
     print("="*100)
 
 

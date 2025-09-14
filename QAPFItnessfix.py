@@ -9,110 +9,106 @@ import numpy as np
 def main() -> None:
     """Main function to run the Sailfish Optimizer"""
     # Data size selection with validation
+    print("DATA SIZE SELECTION")
+    print("Choose the size of data to use for optimization:")
+    print("1. Small data (kecil.csv) - 4 facilities")
+    print("2. Medium data (sedang.csv) - 16 facilities")
+    print("3. Big data (besar.csv) - 25 facilities")
+    
     while True:
-        print("Select data size: [S]mall, [M]edium, [B]ig")
-        size_choice = input().strip().lower()
-        if size_choice in ['s', 'm', 'b']:
+        size_choice = input("Enter your choice (1/2/3): ").strip()
+        if size_choice in ['1', '2', '3']:
             break
         else:
-            print("Please enter 'S', 'M', or 'B' for data size selection.")
+            print("Please enter '1', '2', or '3' for data size selection.")
     
-    if size_choice == 's':
-        csv_path = r"qap_matrices.csv"
-    elif size_choice == 'm':
-        csv_path = r"qap_matrices2.csv"
-    elif size_choice == 'b':
-        csv_path = r"qap_matrices3.csv"
+    if size_choice == '1':
+        csv_path = r"kecil.csv"
+    elif size_choice == '2':
+        csv_path = r"sedang.csv"
+    elif size_choice == '3':
+        csv_path = r"besar.csv"
 
     freq_matrix, distance_matrix = read_matrices_from_csv(csv_path)
 
     # Logging mode selection with validation
+    print("\n📝 LOGGING OPTIONS")
+    print("Select output mode:")
+    print("1. Steps to file, summary to terminal (recommended)")
+    print("2. Summary only")
+    
     while True:
-        print("Log all process in the txt file? [Y/N]")
-        log_choice = input().strip().lower()
-        if log_choice in ['y', 'n']:
-            full_log = log_choice == 'y'
+        log_choice = input("Enter your choice (1/2): ").strip()
+        if log_choice in ['1', '2']:
+            full_log = log_choice == '1'
             break
         else:
-            print("Please enter 'Y' or 'N' for logging selection.")
+            print("Please enter '1' or '2' for logging selection.")
 
     # Parameter customization selection with validation
+    print("\n⚙️ PARAMETER CONFIGURATION")
+    print("Select parameter mode:")
+    print("1. Use default parameters")
+    print("2. Customize parameters")
+    
     while True:
-        print("Use default parameters or customize? [D]efault / [C]ustom")
-        param_choice = input().strip().lower()
-        if param_choice in ['d', 'c']:
+        param_choice = input("Enter your choice (1/2): ").strip()
+        if param_choice in ['1', '2']:
             break
         else:
-            print("Please enter 'D' for default or 'C' for custom parameters.")
+            print("❌ Please enter '1' or '2' for parameter configuration.")
+    
+    # Fixed constants (cannot be changed)
+    A = 4  # Constant value
+    epsilon = 0.001  # Constant value
     
     # Default parameters
     n_sailfish = 5
     n_sardines = 95
     max_iter = 100
-    A = 4
-    epsilon = 0.001
     
-    if param_choice == 'c':
-        print("Enter custom parameters:")
+    if param_choice == '2':
+        print("Enter custom parameters (A=4 and epsilon=0.001 are fixed constants):")
         
         # Get number of sailfish with validation
         while True:
             try:
                 n_sailfish = int(input("Number of sailfish (default: 5): ").strip())
                 if n_sailfish <= 0:
-                    print("Please enter a positive number.")
+                    print("❌ Error: Number of sailfish must be a positive integer. Please try again.")
                     continue
                 break
             except ValueError:
-                print("Please enter a valid number.")
+                print("❌ Error: Please enter a valid positive integer for sailfish count.")
         
         # Get number of sardines with validation
         while True:
             try:
                 n_sardines = int(input("Number of sardines (default: 95): ").strip())
                 if n_sardines <= 0:
-                    print("Please enter a positive number.")
+                    print("❌ Error: Number of sardines must be a positive integer. Please try again.")
+                    continue
+                if n_sardines <= n_sailfish:
+                    print("❌ Error: Number of sardines must be greater than number of sailfish (SF < SD). Please try again.")
                     continue
                 break
             except ValueError:
-                print("Please enter a valid number.")
+                print("❌ Error: Please enter a valid positive integer for sardine count.")
         
         # Get maximum iterations with validation
         while True:
             try:
                 max_iter = int(input("Maximum iterations (default: 100): ").strip())
                 if max_iter <= 0:
-                    print("Please enter a positive number.")
+                    print("❌ Error: Maximum iterations must be a positive integer. Please try again.")
                     continue
                 break
             except ValueError:
-                print("Please enter a valid number.")
+                print("❌ Error: Please enter a valid positive integer for maximum iterations.")
         
-        # Get A parameter with validation
-        while True:
-            try:
-                A = float(input("A parameter (default: 4.0): ").strip())
-                if A <= 0:
-                    print("Please enter a positive number.")
-                    continue
-                break
-            except ValueError:
-                print("Please enter a valid number.")
-        
-        # Get epsilon parameter with validation
-        while True:
-            try:
-                epsilon = float(input("Epsilon parameter (default: 0.001): ").strip())
-                if epsilon <= 0:
-                    print("Please enter a positive number.")
-                    continue
-                break
-            except ValueError:
-                print("Please enter a valid number.")
-        
-        print(f"Using custom parameters: SF={n_sailfish}, SD={n_sardines}, MaxIter={max_iter}, A={A}, Epsilon={epsilon}")
+        print(f"✅ Using custom parameters: SF={n_sailfish}, SD={n_sardines}, MaxIter={max_iter}, A={A}, Epsilon={epsilon}")
     else:
-        print("Using default parameters: SF=5, SD=95, MaxIter=100, A=4, Epsilon=0.001")
+        print(f"✅ Using default parameters: SF={n_sailfish}, SD={n_sardines}, MaxIter={max_iter}, A={A}, Epsilon={epsilon}")
 
     optimizer = SailfishOptimizer(
         n_sailfish=n_sailfish,

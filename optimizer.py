@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List, Tuple, Optional
 
 from io_utils import OutputLogger
-from sfo.reporting import print_initial_parameters as _print_initial_parameters, print_comprehensive_results_table as _print_comprehensive_results_table, print_final_results as _print_final_results
+from sfo.reporting import print_initial_parameters as _print_initial_parameters, print_comprehensive_results_table as _print_comprehensive_results_table, print_final_results as _print_final_results, report_sardine_population_extinction as _report_sardine_population_extinction
 from sfo.population import print_random_populations as _print_random_populations, save_original_positions as _save_original_positions, print_sorted_arrays_and_solutions as _print_sorted_arrays_and_solutions
 from sfo.fitness import calculate_detailed_fitness as _calculate_detailed_fitness, print_fitness_summary as _print_fitness_summary
 from sfo.replacement import perform_sailfish_sardine_replacement as _perform_sailfish_sardine_replacement
@@ -184,14 +184,22 @@ class SailfishOptimizer:
         print()
         self.run_iteration_zero()
         for iteration in range(1, self.max_iter + 1):
+            # Check if sardines were eliminated during the previous iteration
             if self.n_sardines == 0:
                 print(f"\nNo sardines remaining after iteration {iteration-1}. Stopping optimization.")
                 break
             self.run_iteration(iteration)
+            # Check if sardines were eliminated during this iteration (after replacement)
+            if self.n_sardines == 0:
+                print(f"\nSardine population eliminated during iteration {iteration}. Stopping optimization.")
+                break
         self.print_final_results()
 
     def print_final_results(self) -> None:
         _print_final_results(self)
+
+    def report_sardine_population_extinction(self, iteration_when_extinct: int) -> None:
+        _report_sardine_population_extinction(self, iteration_when_extinct)
 
 
 __all__ = [

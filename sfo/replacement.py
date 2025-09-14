@@ -96,6 +96,11 @@ def perform_sailfish_sardine_replacement(engine) -> None:
     print(f"- New sailfish population size: {engine.n_sailfish}")
     print(f"- New sardine population size: {engine.n_sardines}")
     
+    # Check for sardine population extinction
+    if engine.n_sardines == 0:
+        from sfo.reporting import report_sardine_population_extinction
+        report_sardine_population_extinction(engine, engine.current_iteration)
+    
     if replacements_made:
         print(f"\nUpdated populations after replacement:")
         print("SAILFISH (after replacement):")
