@@ -7,6 +7,101 @@
 4. **Extract indices**: `[4, 2, 1, 3]`
 5. **Result**: Facility 4 → Location 1, Facility 2 → Location 2, etc.
 
+### Visualization and Graphing Features (NEW)
+
+#### Overview
+The Sailfish Optimization Algorithm now includes comprehensive visualization capabilities to track fitness scores and population dynamics throughout the optimization process.
+
+#### Features
+- **Fitness Evolution Tracking**: Monitor best fitness, average fitness, and fitness ranges over iterations
+- **Population Dynamics**: Track sailfish and sardine population sizes and ratios
+- **Individual Fish Tracking**: Visualize fitness values for each individual fish
+- **Statistical Analysis**: Convergence rates, population efficiency, and fitness diversity metrics
+- **Automatic Plot Generation**: Plots are generated automatically at the end of optimization
+- **Manual Plot Control**: Generate specific plots on demand
+
+#### Usage
+
+##### Basic Usage with Graphing Enabled
+```python
+from optimizer import SailfishOptimizer
+
+# Initialize with graphing enabled (default)
+optimizer = SailfishOptimizer(
+    n_sailfish=3,
+    n_sardines=8,
+    freq_matrix=freq_matrix,
+    distance_matrix=distance_matrix,
+    max_iter=100,
+    enable_graphing=True  # Enable graphing (default: True)
+)
+
+# Run optimization - plots will be generated automatically
+optimizer.run_optimization()
+```
+
+##### Manual Plot Generation
+```python
+# Generate all plots with custom filename
+optimizer.generate_optimization_plots("my_optimization_results")
+
+# Generate specific plots
+optimizer.create_fitness_plot("fitness_evolution.png")
+optimizer.create_population_plot("population_dynamics.png")
+```
+
+##### Disable Graphing
+```python
+# For environments without matplotlib or when plotting is not needed
+optimizer = SailfishOptimizer(
+    n_sailfish=3,
+    n_sardines=8,
+    freq_matrix=freq_matrix,
+    distance_matrix=distance_matrix,
+    enable_graphing=False  # Disable graphing
+)
+```
+
+#### Generated Plots
+
+##### 1. Fitness Evolution Plot
+- **Best Fitness Evolution**: Shows the best fitness found over iterations
+- **Average Fitness Comparison**: Compares average sailfish vs sardine fitness
+- **Population Dynamics**: Shows population sizes over time
+- **Fitness Range Analysis**: Displays best vs worst fitness values
+
+##### 2. Population Dynamics Plot
+- **Population Size Evolution**: Track sailfish and sardine populations
+- **Population Ratio Evolution**: Shows the ratio of sailfish to sardines
+
+##### 3. Individual Fitness Plot
+- **Sailfish Individual Fitness**: Scatter plot of each sailfish's fitness
+- **Sardine Individual Fitness**: Scatter plot of each sardine's fitness
+
+##### 4. Summary Statistics Plot
+- **Improvement Rate**: Shows percentage improvement per iteration
+- **Population Efficiency**: Fitness per individual in each population
+- **Fitness Diversity**: Standard deviation of fitness within populations
+- **Total Population vs Best Fitness**: Combined view of population and fitness
+
+#### Dependencies
+```bash
+pip install matplotlib numpy
+```
+
+#### Example Output Files
+When optimization completes, the following files are generated:
+- `sailfish_optimization_SF3_S8_20241201_143022_fitness_evolution.png`
+- `sailfish_optimization_SF3_S8_20241201_143022_population_dynamics.png`
+- `sailfish_optimization_SF3_S8_20241201_143022_individual_fitness.png`
+- `sailfish_optimization_SF3_S8_20241201_143022_summary_statistics.png`
+
+#### Demo Script
+Run the included demo script to see the graphing features in action:
+```bash
+python graphing_demo.py
+```
+
 ### Replacement Position Tracking (NEW FEATURE)
 
 #### Enhanced Replacement Logic
