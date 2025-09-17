@@ -9,6 +9,7 @@ from sfo.population import print_random_populations as _print_random_populations
 from sfo.fitness import calculate_detailed_fitness as _calculate_detailed_fitness, print_fitness_summary as _print_fitness_summary
 from sfo.replacement import perform_sailfish_sardine_replacement as _perform_sailfish_sardine_replacement
 from sfo.dynamics import calculate_pd_and_lambda_values as _calculate_pd_and_lambda_values, update_sailfish_positions as _update_sailfish_positions, calculate_ap_and_update_sardines as _calculate_ap_and_update_sardines
+from sfo.graphing import OptimizationTracker
 
 
 class SailfishOptimizer:
@@ -22,6 +23,7 @@ class SailfishOptimizer:
         A: float = 4,
         epsilon: float = 0.001,
         log_to_file: bool = True,
+        enable_graphing: bool = True,
     ) -> None:
         if n_sardines <= n_sailfish:
             raise ValueError("Number of sardines must be greater than number of sailfish")
@@ -69,6 +71,9 @@ class SailfishOptimizer:
         self.current_iteration: int = 0
         # NEW: Track which sailfish should use sardine sorted positions for updates
         self.sailfish_using_sardine_positions: dict = {}
+        # NEW: Graphing and tracking capabilities
+        self.enable_graphing: bool = enable_graphing
+        self.tracker: Optional[OptimizationTracker] = OptimizationTracker() if enable_graphing else None
 
     def __del__(self) -> None:
         if self.log_to_file and self.logger:
@@ -146,6 +151,7 @@ class SailfishOptimizer:
         self.update_sailfish_positions()
         self.calculate_ap_and_update_sardines()
         self.fitness_history.append(self.best_fitness)
+        self.record_iteration_metrics()  # Record metrics for graphing
         print(f"\n" + "="*80)
         print("ITERATION 0 COMPLETED")
         print("="*80)
@@ -169,6 +175,7 @@ class SailfishOptimizer:
         self.update_sailfish_positions()
         self.calculate_ap_and_update_sardines()
         self.fitness_history.append(self.best_fitness)
+        self.record_iteration_metrics()  # Record metrics for graphing
         print(f"\n" + "="*80)
         print(f"ITERATION {iteration_num} COMPLETED")
         print("="*80)
@@ -194,12 +201,55 @@ class SailfishOptimizer:
                 print(f"\nSardine population eliminated during iteration {iteration}. Stopping optimization.")
                 break
         self.print_final_results()
+        
+        # Generate plots if graphing is enabled
+        if self.enable_graphing and self.tracker:
+            print(f"\n" + "="*80)
+            print("GENERATING OPTIMIZATION VISUALIZATION PLOTS")
+            print("="*80)
+            self.generate_optimization_plots()
 
     def print_final_results(self) -> None:
         _print_final_results(self)
 
     def report_sardine_population_extinction(self, iteration_when_extinct: int) -> None:
         _report_sardine_population_extinction(self, iteration_when_extinct)
+    
+    def record_iteration_metrics(self) -> None:
+        """Record metrics for the current iteration for graphing."""
+        if self.enable_graphing and self.tracker:
+            self.tracker.record_iteration(self.current_iteration, self)
+    
+    def generate_optimization_plots(self, base_filename: Optional[str] = None) -> None:
+        """Generate all optimization visualization plots."""
+        if not self.enable_graphing or not self.tracker:
+            print("Graphing is disabled. Enable graphing during initialization to use this feature.")
+            return
+        
+        if base_filename is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            base_filename = f"sailfish_optimization_SF{self.original_n_sailfish}_S{self.original_n_sardines}_{timestamp}"
+        
+        from sfo.graphing import generate_all_plots
+        generate_all_plots(self.tracker, base_filename)
+    
+    def create_fitness_plot(self, save_path: Optional[str] = None) -> None:
+        """Create fitness evolution plot."""
+        if not self.enable_graphing or not self.tracker:
+            print("Graphing is disabled. Enable graphing during initialization to use this feature.")
+            return
+        
+        from sfo.graphing import create_fitness_evolution_plot
+        create_fitness_evolution_plot(self.tracker, save_path)
+    
+    def create_population_plot(self, save_path: Optional[str] = None) -> None:
+        """Create population dynamics plot."""
+        if not self.enable_graphing or not self.tracker:
+            print("Graphing is disabled. Enable graphing during initialization to use this feature.")
+            return
+        
+        from sfo.graphing import create_population_dynamics_plot
+        create_population_dynamics_plot(self.tracker, save_path)
 
 
 __all__ = [
