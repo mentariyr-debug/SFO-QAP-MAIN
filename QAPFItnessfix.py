@@ -13,7 +13,7 @@ def main() -> None:
     print("Choose the size of data to use for optimization:")
     print("1. Small data (kecil.csv) - 4 facilities")
     print("2. Medium data (sedang.csv) - 16 facilities")
-    print("3. Big data (besar.csv) - 25 facilities")
+    print("3. Big data (besar.csv) - 32 facilities")
     
     while True:
         size_choice = input("Enter your choice (1/2/3): ").strip()
