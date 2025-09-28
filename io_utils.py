@@ -33,6 +33,53 @@ class OutputLogger:
         self.close()
 
 
+class DualOutputLogger:
+    """Class to handle separate output to terminal and file"""
+    def __init__(self, filename: str = "output.txt") -> None:
+        self.terminal: Any = sys.stdout
+        self.log = open(filename, "w", encoding='utf-8')
+        self.log.write(f"Sailfish Optimizer Detailed Output Log\n")
+        self.log.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        self.log.write(f"{'='*80}\n\n")
+        self.log.flush()
+        
+    def write(self, message: str) -> None:
+        """Write to file only (used when redirected as stdout)"""
+        self.log.write(message)
+        self.log.flush()
+        
+    def write_to_file(self, message: str) -> None:
+        """Write only to file"""
+        self.log.write(message)
+        self.log.flush()
+        
+    def write_to_terminal(self, message: str) -> None:
+        """Write only to terminal"""
+        self.terminal.write(message)
+        self.terminal.flush()
+        
+    def write_to_both(self, message: str) -> None:
+        """Write to both terminal and file"""
+        self.terminal.write(message)
+        self.terminal.flush()
+        self.log.write(message)
+        self.log.flush()
+        
+    def flush(self) -> None:
+        self.terminal.flush()
+        self.log.flush()
+        
+    def close(self) -> None:
+        if self.log:
+            self.log.close()
+            
+    def __enter__(self) -> "DualOutputLogger":
+        return self
+        
+    def __exit__(self, exc_type, exc, tb) -> None:
+        self.close()
+
+
 def read_matrices_from_csv(filename: str) -> Tuple[List[List[float]], List[List[float]]]:
     """
     Read frequency and distance matrices from a CSV file.
@@ -68,6 +115,7 @@ def read_matrices_from_csv(filename: str) -> Tuple[List[List[float]], List[List[
 
 __all__ = [
     "OutputLogger",
+    "DualOutputLogger",
     "NullWriter",
     "DEFAULT_CSV_PATH",
     "read_matrices_from_csv",

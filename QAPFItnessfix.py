@@ -119,11 +119,15 @@ def main() -> None:
         A=A,
         epsilon=epsilon,
         log_to_file=full_log,
+        dual_output=full_log,  # Enable dual output when logging to file
+        data_file=csv_path,
     )
 
     if full_log:
+        # Dual output mode - terminal shows summary, file gets detailed output
         optimizer.run_optimization()
     else:
+        # Summary only mode - suppress all output except final result
         original_stdout = sys.stdout
         sys.stdout = NullWriter()
         try:
