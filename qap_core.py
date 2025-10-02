@@ -102,27 +102,47 @@ def print_assignment_matrix(permutation: List[int]) -> None:
 
 
 def print_matrices(freq_matrix: List[List[float]], distance_matrix: List[List[float]]) -> None:
-    """Print the frequency and distance matrices."""
-    print("Frequency Matrix (between facilities):")
-    print("     ", end="")
-    for j in range(len(freq_matrix[0])):
-        print(f"{j+1:4}", end="")
+    """Print the frequency and distance matrices in a clear, readable format."""
+    n = len(freq_matrix)
+    
+    print("\n📊 FREQUENCY MATRIX (Flow between facilities)")
+    print("=" * 60)
+    print("    ", end="")
+    for j in range(n):
+        print(f"F{j+1:>6}", end="")
     print()
-    for i in range(len(freq_matrix)):
-        print(f"{i+1} [", end="")
-        for j in range(len(freq_matrix[0])):
-            print(f"{freq_matrix[i][j]:4}", end="")
-        print(" ]")
-    print("\nDistance Matrix (between locations):")
-    print("     ", end="")
-    for j in range(len(distance_matrix[0])):
-        print(f"{j+1:4}", end="")
+    print("    " + "-" * (7 * n))
+    
+    for i in range(n):
+        print(f"F{i+1} |", end="")
+        for j in range(n):
+            if freq_matrix[i][j] == int(freq_matrix[i][j]):
+                print(f"{int(freq_matrix[i][j]):>6}", end="")
+            else:
+                print(f"{freq_matrix[i][j]:>6.1f}", end="")
+        print()
+    
+    print("\n📍 DISTANCE MATRIX (Distance between locations)")
+    print("=" * 60)
+    print("    ", end="")
+    for j in range(n):
+        print(f"L{j+1:>6}", end="")
     print()
-    for i in range(len(distance_matrix)):
-        print(f"{i+1} [", end="")
-        for j in range(len(distance_matrix[0])):
-            print(f"{distance_matrix[i][j]:4}", end="")
-        print(" ]")
+    print("    " + "-" * (7 * n))
+    
+    for i in range(n):
+        print(f"L{i+1} |", end="")
+        for j in range(n):
+            if distance_matrix[i][j] == int(distance_matrix[i][j]):
+                print(f"{int(distance_matrix[i][j]):>6}", end="")
+            else:
+                print(f"{distance_matrix[i][j]:>6.1f}", end="")
+        print()
+    
+    print("\n💡 Matrix Interpretation:")
+    print("   • Frequency Matrix: Shows interaction frequency between facilities")
+    print("   • Distance Matrix: Shows physical distances between locations")
+    print("   • Goal: Minimize total cost = Σ(frequency × distance) for all pairs")
 
 
 __all__ = [

@@ -8,8 +8,12 @@ import numpy as np
 
 def main() -> None:
     """Main function to run the Sailfish Optimizer"""
+    # Print header at the very beginning before any user interaction
+    from terminal_output import print_header
+    print_header()
+    
     # Data size selection with validation
-    print("DATA SIZE SELECTION")
+    print("\nDATA SIZE SELECTION")
     print("Choose the size of data to use for optimization:")
     print("1. Small data (kecil.csv) - 4 facilities")
     print("2. Medium data (sedang.csv) - 16 facilities")

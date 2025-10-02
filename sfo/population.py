@@ -10,22 +10,22 @@ def print_random_populations(engine) -> None:
     print("SAILFISH Random Values:")
     print(f"{'ID':<8}", end="")
     for loc in range(engine.problem_size):
-        print(f"Loc{loc+1:2}", end="   ")
+        print(f"{'Loc ' + str(loc+1):>8}", end="")
     print()
     for i in range(engine.n_sailfish):
-        print(f"SF{i+1:<6}", end="")
+        print(f"SF{i+1:<7}", end="")
         for val in engine.sailfish_random_values[i]:
-            print(f"{val:5.3f}", end=" ")
+            print(f"{val:8.3f}", end="")
         print()
     print("\nSARDINE Random Values:")
     print(f"{'ID':<8}", end="")
     for loc in range(engine.problem_size):
-        print(f"Loc{loc+1:2}", end="   ")
+        print(f"{'Loc ' + str(loc+1):>8}", end="")
     print()
     for i in range(engine.n_sardines):
         print(f"S{i+1:<7}", end="")
         for val in engine.sardine_random_values[i]:
-            print(f"{val:5.3f}", end=" ")
+            print(f"{val:8.3f}", end="")
         print()
 
 

@@ -2,17 +2,8 @@ from qap_core import print_matrices, calculate_qap_fitness
 
 
 def print_initial_parameters(engine) -> None:
-    # Add header with student information at the very beginning
+    # Header is already printed at file beginning, start with parameters section
     print("="*80)
-    print("PENERAPAN SAILFISH OPTIMIZER ALGORITHM")
-    print("(SFO) UNTUK MENYELESAIKAN QUADRATIC")
-    print("ASSIGNMENT PROBLEM (QAP)")
-    print()
-    print("MENTARI YANI ROFANDI")
-    print("082111233064")
-    print("="*80)
-    
-    print("\n" + "="*80)
     print("1. INITIAL VARIABLES AND QAP MATRICES")
     print("="*80)
     print(f"Initial Parameters:")

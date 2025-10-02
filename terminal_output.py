@@ -16,7 +16,6 @@ def print_header() -> None:
 
 def print_terminal_data_info(engine) -> None:
     """Print data information for terminal output"""
-    print_header()
     print("\n" + "="*60)
     print("📊 DATA INFORMATION")
     print("="*60)
