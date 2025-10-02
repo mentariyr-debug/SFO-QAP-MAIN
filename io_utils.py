@@ -13,6 +13,15 @@ class OutputLogger:
     def __init__(self, filename: str = "output.txt") -> None:
         self.terminal: Any = sys.stdout
         self.log = open(filename, "w", encoding='utf-8')
+        # Add header with student information
+        self.log.write("="*80 + "\n")
+        self.log.write("PENERAPAN SAILFISH OPTIMIZER ALGORITHM\n")
+        self.log.write("(SFO) UNTUK MENYELESAIKAN QUADRATIC\n")
+        self.log.write("ASSIGNMENT PROBLEM (QAP)\n")
+        self.log.write("\n")
+        self.log.write("MENTARI YANI ROFANDI\n")
+        self.log.write("082111233064\n")
+        self.log.write("="*80 + "\n\n")
         self.log.write(f"Sailfish Optimizer Output Log\n")
         self.log.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         self.log.write(f"{'='*80}\n\n")
@@ -38,6 +47,15 @@ class DualOutputLogger:
     def __init__(self, filename: str = "output.txt") -> None:
         self.terminal: Any = sys.stdout
         self.log = open(filename, "w", encoding='utf-8')
+        # Add header with student information
+        self.log.write("="*80 + "\n")
+        self.log.write("PENERAPAN SAILFISH OPTIMIZER ALGORITHM\n")
+        self.log.write("(SFO) UNTUK MENYELESAIKAN QUADRATIC\n")
+        self.log.write("ASSIGNMENT PROBLEM (QAP)\n")
+        self.log.write("\n")
+        self.log.write("MENTARI YANI ROFANDI\n")
+        self.log.write("082111233064\n")
+        self.log.write("="*80 + "\n\n")
         self.log.write(f"Sailfish Optimizer Detailed Output Log\n")
         self.log.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         self.log.write(f"{'='*80}\n\n")

@@ -2,6 +2,16 @@ from qap_core import print_matrices, calculate_qap_fitness
 
 
 def print_initial_parameters(engine) -> None:
+    # Add header with student information at the very beginning
+    print("="*80)
+    print("PENERAPAN SAILFISH OPTIMIZER ALGORITHM")
+    print("(SFO) UNTUK MENYELESAIKAN QUADRATIC")
+    print("ASSIGNMENT PROBLEM (QAP)")
+    print()
+    print("MENTARI YANI ROFANDI")
+    print("082111233064")
+    print("="*80)
+    
     print("\n" + "="*80)
     print("1. INITIAL VARIABLES AND QAP MATRICES")
     print("="*80)
@@ -21,35 +31,75 @@ def print_initial_parameters(engine) -> None:
 
 
 def print_comprehensive_results_table(engine) -> None:
-    print(f"\n" + "="*120)
+    print(f"\n" + "="*140)
     if engine.current_iteration == 0:
         print("COMPREHENSIVE RESULTS TABLE")
     else:
         print(f"ITERATION {engine.current_iteration} - COMPREHENSIVE RESULTS TABLE")
-    print("="*120)
-    print(f"{'ID':<4} {'Random Values':<25} {'Sorted Array':<15} {'Solution':<15} {'Fitness':<8}")
-    print("-" * 120)
+    print("="*140)
+    
+    # Improved table header with better spacing
+    print(f"{'Agent':<8} {'Random Values':<35} {'Sorted Array':<20} {'Solution':<25} {'Fitness':<12} {'Best':<6}")
+    print("-" * 140)
+    
+    # Print sailfish with improved formatting
     for i in range(engine.n_sailfish):
         random_vals = engine.sailfish_random_values[i]
         value_pos_pairs = [(random_vals[j], j+1) for j in range(len(random_vals))]
         sorted_pairs = sorted(value_pos_pairs)
         sorted_array = [pos for val, pos in sorted_pairs]
-        random_str = str([f"{x:.3f}" for x in random_vals])
+        
+        # Format random values with better precision
+        random_str = "[" + ", ".join([f"{x:.3f}" for x in random_vals]) + "]"
+        if len(random_str) > 32:
+            random_str = random_str[:29] + "...]"
+        
+        # Format solution string
         solution_str = str(engine.sailfish_solutions[i])
+        if len(solution_str) > 22:
+            solution_str = solution_str[:19] + "...]"
+        
+        # Format sorted array
+        sorted_str = str(sorted_array)
+        if len(sorted_str) > 17:
+            sorted_str = sorted_str[:14] + "...]"
+        
         fitness = engine.sailfish_fitness[i]
-        marker = "🎯" if engine.sailfish_solutions[i] == engine.best_solution else ""
-        print(f"SF{i+1:<2} {random_str:<25} {str(sorted_array):<15} {solution_str:<15} {fitness:<8} {marker}")
+        marker = "★" if engine.sailfish_solutions[i] == engine.best_solution else ""
+        
+        print(f"SF{i+1:<5} {random_str:<35} {sorted_str:<20} {solution_str:<25} {fitness:<12.2f} {marker:<6}")
+    
+    # Print sardines with improved formatting
     for i in range(engine.n_sardines):
         random_vals = engine.sardine_random_values[i]
         value_pos_pairs = [(random_vals[j], j+1) for j in range(len(random_vals))]
         sorted_pairs = sorted(value_pos_pairs)
         sorted_array = [pos for val, pos in sorted_pairs]
-        random_str = str([f"{x:.3f}" for x in random_vals])
+        
+        # Format random values with better precision
+        random_str = "[" + ", ".join([f"{x:.3f}" for x in random_vals]) + "]"
+        if len(random_str) > 32:
+            random_str = random_str[:29] + "...]"
+        
+        # Format solution string
         solution_str = str(engine.sardine_solutions[i])
+        if len(solution_str) > 22:
+            solution_str = solution_str[:19] + "...]"
+        
+        # Format sorted array
+        sorted_str = str(sorted_array)
+        if len(sorted_str) > 17:
+            sorted_str = sorted_str[:14] + "...]"
+        
         fitness = engine.sardine_fitness[i]
-        marker = "🎯" if engine.sardine_solutions[i] == engine.best_solution else ""
-        print(f"S{i+1:<3} {random_str:<25} {str(sorted_array):<15} {solution_str:<15} {fitness:<8} {marker}")
-    print(f"\nBest Overall Solution: {engine.best_solution} with fitness: {engine.best_fitness}")
+        marker = "★" if engine.sardine_solutions[i] == engine.best_solution else ""
+        
+        print(f"S{i+1:<6} {random_str:<35} {sorted_str:<20} {solution_str:<25} {fitness:<12.2f} {marker:<6}")
+    
+    print("-" * 140)
+    print(f"Best Overall Solution: {engine.best_solution}")
+    print(f"Best Overall Fitness:  {engine.best_fitness:.2f}")
+    print("="*140)
 
 
 def print_final_results(engine) -> None:

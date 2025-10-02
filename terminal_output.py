@@ -2,8 +2,21 @@ from typing import List, Any
 from qap_core import print_matrices
 
 
+def print_header() -> None:
+    """Print header with student information"""
+    print("="*60)
+    print("PENERAPAN SAILFISH OPTIMIZER ALGORITHM")
+    print("(SFO) UNTUK MENYELESAIKAN QUADRATIC")
+    print("ASSIGNMENT PROBLEM (QAP)")
+    print()
+    print("MENTARI YANI ROFANDI")
+    print("082111233064")
+    print("="*60)
+
+
 def print_terminal_data_info(engine) -> None:
     """Print data information for terminal output"""
+    print_header()
     print("\n" + "="*60)
     print("📊 DATA INFORMATION")
     print("="*60)
@@ -52,37 +65,65 @@ def print_terminal_iteration_summary(engine, iteration: int) -> None:
 
 def print_terminal_final_results(engine) -> None:
     """Print final results table for terminal output"""
-    print("\n" + "="*80)
+    print("\n" + "="*100)
     print("📋 FINAL RESULTS TABLE")
-    print("="*80)
-    print(f"{'Iteration':<10} {'Best Fitness':<15} {'Best Solution':<20} {'Best Sailfish':<15}")
-    print("-" * 80)
+    print("="*100)
     
-    for i, fitness in enumerate(engine.fitness_history):
-        # Find which sailfish had the best solution at this iteration
-        # For simplicity, we'll show the current best solution
+    # Print table header with better formatting
+    print(f"{'Iteration':<12} {'Best Fitness':<18} {'Best Solution':<35} {'Best Agent':<15}")
+    print("-" * 100)
+    
+    # Show only key iterations for terminal (first 5, last 5, and some middle ones)
+    total_iterations = len(engine.fitness_history)
+    if total_iterations <= 10:
+        # Show all iterations if 10 or fewer
+        iterations_to_show = list(range(total_iterations))
+    else:
+        # Show first 3, last 3, and some middle ones
+        iterations_to_show = list(range(3))  # First 3
+        middle_start = total_iterations // 2 - 1
+        iterations_to_show.extend(range(middle_start, middle_start + 2))  # 2 middle
+        iterations_to_show.extend(range(total_iterations - 3, total_iterations))  # Last 3
+        iterations_to_show = sorted(set(iterations_to_show))
+    
+    prev_shown = -1
+    for i in iterations_to_show:
+        # Add ellipsis if there's a gap
+        if i > prev_shown + 1:
+            print(f"{'...':<12} {'...':<18} {'...':<35} {'...':<15}")
+        
+        fitness = engine.fitness_history[i]
+        
+        # Find which agent had the best solution at this iteration
         if i == len(engine.fitness_history) - 1:  # Last iteration
-            best_sailfish = "Current"
+            best_agent = "Current"
             for j, solution in enumerate(engine.sailfish_solutions):
                 if solution == engine.best_solution:
-                    best_sailfish = f"SF{j+1}"
+                    best_agent = f"SF{j+1}"
                     break
-            if best_sailfish == "Current":
+            if best_agent == "Current":
                 for j, solution in enumerate(engine.sardine_solutions):
                     if solution == engine.best_solution:
-                        best_sailfish = f"S{j+1}"
+                        best_agent = f"S{j+1}"
                         break
         else:
-            best_sailfish = "N/A"
+            best_agent = "N/A"
         
+        # Format solution string (truncate if too long)
         solution_str = str(engine.best_solution) if engine.best_solution else "N/A"
-        print(f"{i:<10} {fitness:<15} {solution_str:<20} {best_sailfish:<15}")
+        if len(solution_str) > 32:
+            solution_str = solution_str[:29] + "..."
+        
+        print(f"{i:<12} {fitness:<18.2f} {solution_str:<35} {best_agent:<15}")
+        prev_shown = i
     
-    print("-" * 80)
-    print(f"Final Best Solution: {engine.best_solution}")
-    print(f"Final Best Fitness: {engine.best_fitness}")
-    print(f"Total Iterations: {len(engine.fitness_history)}")
-    print("="*80)
+    print("-" * 100)
+    print(f"{'SUMMARY':<12}")
+    print(f"{'Final Best Solution:':<20} {engine.best_solution}")
+    print(f"{'Final Best Fitness:':<20} {engine.best_fitness:.2f}")
+    print(f"{'Total Iterations:':<20} {len(engine.fitness_history)}")
+    print(f"{'Algorithm:':<20} Sailfish Optimizer (SFO)")
+    print("="*100)
 
 
 def print_terminal_optimization_start(engine) -> None:
@@ -93,3 +134,4 @@ def print_terminal_optimization_start(engine) -> None:
     print("Running optimization with detailed logging to file...")
     print("Terminal will show summary information only.")
     print("="*60)
+
